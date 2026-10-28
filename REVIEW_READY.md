@@ -1,5 +1,7 @@
 # Local review checkpoint
 
+**Deployment continuation, 28 October 2026:** The local package has been updated and reverified while preserving data. Current JAR SHA-256 is `086d6605fdcc8a52883bc852db800662ee0be7d1fa5eb08e63223f081260971c`; its previous version is retained privately for rollback. Latest source has19 passing tests; MySQL and an isolated hosted-profile H2 run each passed91 HTTP and17 restart assertions. GitHub source is pushed privately. Hosting is authorized only at₹0 and remains blocked on authentication/account-plan verification, not general approval. See PROJECT_LINKS.md / LIVE_TEST_RESULTS.md. Earlier dates/counts below are historical evidence.
+
 **Local application available. Deployment has not started.**
 
 Open **http://127.0.0.1:8080/login**. The final packaged Java application is running on loopback against the dedicated **MySQL 8.0.46 / fuzzy_demo** database. The separately tested H2 fallback on 8081 has been stopped to avoid confusion.

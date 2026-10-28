@@ -59,7 +59,8 @@ class Client:
 def main():
  anon=Client();check(anon.call('/dashboard')['url'].endswith('/login'),'Anonymous protected route redirects');check(anon.call('/login',{'email':'alice@demo.local','password':'bad'},csrf=False)['status']==403,'POST without CSRF denied')
  tag=uuid.uuid4().hex[:8];email='http-'+tag+'@demo.local';new=Client()
- fields={'name':'HTTP Synthetic '+tag,'email':email,'password':'Demo@12345','rpassword':'Demo@12345','dob':'2002-05-06','gender':'Other','phone':'0000000000','city':'Synthetic City','country':'Demo Country'}
+ test_password=os.environ.get('FUZZY_TEST_PASSWORD','Demo@12345')
+ fields={'name':'HTTP Synthetic '+tag,'email':email,'password':test_password,'rpassword':test_password,'dob':'2002-05-06','gender':'Other','phone':'0000000000','city':'Synthetic City','country':'Demo Country'}
  signature=(ROOT/'demo-samples/synthetic-signature.png').read_bytes()
  r=new.call('/register',fields,[('signature','signature.png',signature,'image/png')]);check(r['status']==200 and 'Registration saved' in r['text'],'Registration with all legacy fields and signature')
  duplicate=new.call('/register',fields);check(duplicate['status']==400,'Duplicate registration rejected')

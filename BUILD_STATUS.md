@@ -2,11 +2,11 @@
 
 ## Deployment continuation — 28 October 2026, 22:50 IST
 
-Publishing/deployment authorized, overridden by strict ₹0 total budget: no card, payment, paid upgrade or custom domain. Existing authenticated GitHub account created dedicated private kiranbcrkbc/fuzzy-project; source publishing is being completed. No target remote existed; unrelated public repositories untouched.
+Publishing/deployment authorized, overridden by strict ₹0 total budget: no card, payment, paid upgrade or custom domain. Existing authenticated GitHub account created dedicated private kiranbcrkbc/fuzzy-project; source is committed, pushed and remote-verified. No target remote existed; unrelated public repositories untouched.
 
 Added fail-closed hosted secret checks, hidden local default credentials in hosted login, disabled hosted reset, minimal /healthz, reproducible source Dockerfile and Railway configuration. Latest package build passed19 methods. Updated MySQL package passed91 HTTP assertions and17 restart assertions on8082; original8080 backup and all existing data/history retained. Recent EXPIRED challenge matches its ten-minute window; no expiry/nonce weakening.
 
-Railway sign-in/connector authentication remains pending. Actual plan, credit/expiry and no-charge entitlements cannot yet be inspected; no hosting resources provisioned, no live URL invented. Current authoritative documents: DEPLOYMENT.md, LIVE_TEST_RESULTS.md, PROJECT_LINKS.md. Next action: finish safe GitHub push, then authenticate hosting, verify actual ₹0 limits and deploy/test only if eligible. Do not use ephemeral storage for objects/keys.
+Railway sign-in/connector authentication remains pending. Actual plan, credit/expiry and no-charge entitlements cannot yet be inspected; no hosting resources provisioned, no live URL invented. Current authoritative documents: DEPLOYMENT.md, LIVE_TEST_RESULTS.md, PROJECT_LINKS.md. Next action: authenticate hosting, verify actual ₹0 limits and deploy/test only if eligible. Do not use ephemeral storage for objects/keys. The final primary package is running on8080 and passed91 HTTP plus17 persistence assertions; isolated hosted H2 also passed91 plus17. Temporary test servers are stopped after checks. Original JAR retained privately for rollback.
 
 Session started 2026-10-28 19:42 IST. Target: 180 minutes.
 
