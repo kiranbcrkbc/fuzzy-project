@@ -1,0 +1,4 @@
+# Manually reviewed: AGENTS.md line 157 is the public transformation name
+# AES/GCM/NoPadding in an encryption requirement, not a secret key or credential.
+# Exception is restricted to this exact historical finding fingerprint.
+01b910c40e6f02f5e665669d7e2b4451a61218bf:AGENTS.md:generic-api-key:157
