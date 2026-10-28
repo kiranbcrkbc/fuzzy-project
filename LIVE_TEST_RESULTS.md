@@ -1,6 +1,31 @@
 # Deployment verification evidence
 
-28 October 2026, IST. **No live HTTPS deployment exists yet.** All checks below are local unless a later section names an actual public URL and deployed commit.
+Final verification at approximately23:42 IST: Render reports `Deploy succeeded | Live` for **1a237b7af042f3cca00c082af77120356958188f** (deploy dep-dbh3kiff3r2c73eqhvjg). After this fresh container deployment, `scripts/restart_check.py https://fuzzy-project-demo.onrender.com` passed **17 assertions**, including exact healthy-object decryption, stable wrapping keys, approval/key IDs, retained full PASS/FAIL, corrupt-download rejection, access decisions/notices and a new upload. Log: evidence/deployment/live-restart.log. This verifies real provider persistence across redeploy rather than only a local restart.
+
+Corrected public login opened in Chrome and displays PostgreSQL / persistent SQL storage with valid punctuation. Genuine screenshot: evidence/deployment/live-login.jpg. Browser warning/error log query returned[]. HTTPS login200; /healthz UP; session cookie Secure, HttpOnly and SameSite=Strict; published local password absent. Full-history Gitleaks scan of five commits found no leaks after the exact reviewed false-positive exclusion. Local MySQL /healthz remained UP. Temporary SQL validation server stopped; local8080 backup remains running.
+
+## Public Render deployment — 28 October 2026
+
+Actual public HTTPS URL: https://fuzzy-project-demo.onrender.com/login. Initial deployed commit `6595dee1f8667fad9723da6babe6cbeacba80362`; final display correction `1a237b7af042f3cca00c082af77120356958188f`. Active server profiles: postgres,hosted; PostgreSQL 18 connection observed in provider startup logs. The initial UI incorrectly displayed H2; the corrected database/layout labels were rebuilt with all 24 JUnit methods passing and redeployed. The initial HTTP state file's H2 label is an observation of that UI defect, not the actual database.
+
+Executed packaged builds: `.\app\mvnw.cmd -B -f app\pom.xml package -Dfuzzy.build.directory=<fresh absolute output directory>`. Build logs: evidence/deployment/render-build.log and render-fixed-build.log. 24 tests, zero failures/errors/skips. Render Docker's `mvn -B verify` also passed all 24 tests before packaging.
+
+`scripts/http_acceptance.py http://127.0.0.1:8083`: 91 assertions passed using SQL object mode with H2 persistence. Restarted JAR with the same SQL database/master secret and a different scratch directory; `scripts/restart_check.py http://127.0.0.1:8083`: 17 assertions passed. Main MySQL backup on8080 remained available.
+
+`scripts/http_acceptance.py https://fuzzy-project-demo.onrender.com`: **91 assertions passed**, with the private hosted seed loaded from ignored configuration, never printed. Actual registration with all profile fields/signature, pending restriction, KGC approval/key notification, OTP incorrect/reuse restrictions, fuzzy five/six/duplicate boundaries, binary exact-byte roundtrip, duplicate filenames, oversized/empty/path validation, ownership/role restrictions, sharing approval/rejection/revocation, backend full PASS, real SQL ciphertext corruption and new full FAIL, corrupt-download rejection, new-version recovery, retained failed history and navigation/assets were exercised. Log: evidence/deployment/live-http.log; JSON: evidence/deployment/live-render/http-acceptance.json.
+
+Live binary fixture: 153600 bytes, SHA-256 `41dae6b28c30ab57faaf5c4707cb4bcda0dcff3057a394447eaad9a67d06ad82`. Full PASS audit `ca6e05ce-5638-4635-8cc6-86940dd18725`; new full FAIL audit `e18ae2cd-b55d-4e6b-807e-d1a0f14a6bec`; corrupted object `378387ef-cccb-4172-940f-7c2f03a8ba84`; healthy recovered object `ea55527e-6582-42c0-a9d8-85d39d7ed50a`. All records remain synthetic; no local personal data was migrated.
+
+First public run stopped at the path-traversal assertion because Render's edge rejected it with403 rather than the application's400. Targeted rerun confirmed403 denial; the assertion now accepts either rejection status. The complete rerun passed91 checks; security protections were not weakened.
+
+Actual Chrome browser checks: opened public login, private-password login to OTP, session-local demo inbox, OTP completion, protected Alice dashboard, exact eight-overlap acceptance, noisy six-overlap acceptance, wrong four-overlap rejection clearing the gate. Browser file selection was blocked by the extension's missing file-URL permission. Public uploads/downloads/sharing/auditing were therefore verified by real HTTPS automation, not claimed as browser-click verification. A complete browser-only walkthrough remains unverified. The native picker fallback did not resolve it. No phantom screenshots or mail delivery claims are made.
+
+Render actual account: Hobby, No card on file, $0 current/projected; both resources Free. Database dashboard expiry27 November2026; web sleeps15 idle minutes. See DEPLOYMENT.md. New resources only; unrelated services left unchanged. Credentials are in the ignored private handoff file or authenticated Render Environment page.
+
+Research limitations remain: synthetic matching, ordinary application keys, local simulated OTP email, logical roles, O(block-count) manifest/response costs; no biometric processing, bilinear pairings, threshold key derivation, erasure coding or research proof theorem. Load/security/expiry recovery tests are not claimed.
+
+
+Historical pre-deployment evidence follows; current public evidence is above.
 
 ## Executed checks
 

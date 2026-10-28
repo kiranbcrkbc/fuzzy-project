@@ -1,5 +1,12 @@
 # Build status
 
+Final deployment checkpoint23:42 IST: Render Live commit1a237b7;91 live HTTPS workflow assertions and17 post-redeploy persistence assertions passed. Login/OTP/identity samples also exercised in Chrome; browser-only file selection remains blocked by extension permission, and is not claimed tested. Both resources Free, no card, database expires27 November2026. Public GitHub, final docs and ignored private credentials ready. Local MySQL backup healthUP on8080. No further provisioning is needed.
+
+## Public deployment update — 28 October 2026
+
+Live login: https://fuzzy-project-demo.onrender.com/login. Public source: https://github.com/kiranbcrkbc/fuzzy-project. Render Free web + PostgreSQL (expires27 November2026); no card/payment/upgrade. Persistent SQL ciphertext plus stable host master secret; local MySQL backup preserved.24 JUnit methods and91 real public HTTPS assertions passed. Browser login/OTP/identity samples passed; browser file chooser blocked, with storage/audit workflows checked over real HTTPS. Restart evidence and final deployed revision are in LIVE_TEST_RESULTS.md. Private live credentials: ignored data/trusted/HOSTED_DEMO_CREDENTIALS.md. See PROJECT_LINKS.md and DEPLOYMENT.md; older sections below record earlier milestones.
+
+
 ## Deployment continuation — 28 October 2026, 22:50 IST
 
 Publishing/deployment authorized, overridden by strict ₹0 total budget: no card, payment, paid upgrade or custom domain. Existing authenticated GitHub account created dedicated private kiranbcrkbc/fuzzy-project; source is committed, pushed and remote-verified. No target remote existed; unrelated public repositories untouched.

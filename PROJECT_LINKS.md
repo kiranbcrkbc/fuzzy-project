@@ -1,11 +1,15 @@
 # Project links
 
-- Private source repository: https://github.com/kiranbcrkbc/fuzzy-project (source committed, pushed and remote SHA/privacy verified).
-- Local backup login: http://127.0.0.1:8080/login (MySQL).
-- Live HTTPS URL: **not available; deployment authentication pending**.
-- Hosting account dashboard: https://railway.com/dashboard (not a created hosting project).
-- Deployed commit: none. Implementation commit: `01b910c40e6f02f5e665669d7e2b4451a61218bf`; subsequent documentation/test-harness updates are on main. Use `git rev-parse HEAD` for the current pushed revision. No source commit is claimed as hosted.
+- Public source repository: https://github.com/kiranbcrkbc/fuzzy-project
+- Live website: https://fuzzy-project-demo.onrender.com/
+- Login: https://fuzzy-project-demo.onrender.com/login
+- Minimal readiness: https://fuzzy-project-demo.onrender.com/healthz
+- Local MySQL backup: http://127.0.0.1:8080/login
+- Render service: https://dashboard.render.com/web/srv-dbh3g8d9el5s73am9lpg
+- Private credential manager: https://dashboard.render.com/web/srv-dbh3g8d9el5s73am9lpg/env (FUZZY_SEED_PASSWORD).
+- Private local credentials: data/trusted/HOSTED_DEMO_CREDENTIALS.md (ignored).
+- Verified deployed commit: `1a237b7af042f3cca00c082af77120356958188f`. Render reports Live; 17 post-redeploy persistence checks passed. Earlier 91 live workflow checks passed on initial commit6595dee. Later documentation-only commits need not be deployed.
 
-No target remote or exact supplied repository URL was present. A dedicated PRIVATE repository was created as authorized. The unrelated public fuzzy-named repository discovered in the account was not selected by guessing and was not changed.
+Render Hobby workspace has no card. Both project resources are Free. PostgreSQL database expires **27 November 2026**; this is temporary hosting. The free web service sleeps after 15 idle minutes. See DEPLOYMENT.md for limits and actual tests.
 
-Actual hosting plan, credits, expiry and billing restrictions have not been verified. Total authorized budget is ₹0, with no card, paid upgrade or custom domain. No live links or free-plan entitlements are invented. Hosted credentials must be handed over privately, never stored in this repository.
+The exact repository was made public after reachable/reflog history and current-file scans. No actual secret was identified; one AES transformation string was a reviewed false positive. References, historical legacy credentials, runtime data, private configuration, uploads and keys remain excluded. No history rewrite or force push was performed.

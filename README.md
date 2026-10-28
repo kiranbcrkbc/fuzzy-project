@@ -1,5 +1,10 @@
 # Fuzzy Identity-Based Data Integrity Auditing for Reliable Cloud Storage Systems
 
+## Public deployment update — 28 October 2026
+
+Live login: https://fuzzy-project-demo.onrender.com/login. Public source: https://github.com/kiranbcrkbc/fuzzy-project. Render Free web + PostgreSQL (expires27 November2026); no card/payment/upgrade. Persistent SQL ciphertext plus stable host master secret; local MySQL backup preserved.24 JUnit methods and91 real public HTTPS assertions passed. Browser login/OTP/identity samples passed; browser file chooser blocked, with storage/audit workflows checked over real HTTPS. Restart evidence and final deployed revision are in LIVE_TEST_RESULTS.md. Private live credentials: ignored data/trusted/HOSTED_DEMO_CREDENTIALS.md. See PROJECT_LINKS.md and DEPLOYMENT.md; older sections below record earlier milestones.
+
+
 **28 October deployment continuation:** GitHub publishing and complete deployment are authorized, with an overriding **₹0 total budget**, no payment method/paid upgrades/custom domain. See [PROJECT_LINKS.md](PROJECT_LINKS.md), [DEPLOYMENT.md](DEPLOYMENT.md) and [LIVE_TEST_RESULTS.md](LIVE_TEST_RESULTS.md) for current truth. The private source repository exists; hosting authentication/account eligibility and a live URL remain pending. Earlier local checkpoint statements are historical. The local MySQL application remains the backup.
 
 Locally runnable educational final-year project: Java 17, Spring Boot 3.5.16, Spring Security, Thymeleaf, JDBC, MySQL and a persistent H2 fallback. Four roles perform real backend operations. This is **not full replication of the paper's fuzzy identity cryptography**. Read LIMITATIONS.md before presenting its security properties.

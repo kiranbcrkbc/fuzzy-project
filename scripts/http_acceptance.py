@@ -71,7 +71,7 @@ def main():
  r=kgc.call('/kgc/users/'+user_id+'/decide',{'decision':'APPROVED'});check(r['status']==200,'KGC approves and issues key');check('APP-' in new.call('/dashboard')['text'],'Issued masked application key visible');check('KGC approved' in new.call('/notifications')['text'],'Recipient key issuance notification')
  new.fuzzy();content=bytes(range(256))*600;file=new.upload('http-'+tag+'.bin',content);duplicate_file=new.upload('http-'+tag+'.bin',content);check(file!=duplicate_file,'Same display filename creates distinct objects')
  check(new.call('/user/files/'+file+'/download')['bytes']==content,'Binary download exact bytes')
- check(new.call('/user/upload',{},[('file','../escape.txt',b'a','text/plain')])['status']==400,'Traversal filename rejected')
+ check(new.call('/user/upload',{},[('file','../escape.txt',b'a','text/plain')])['status'] in (400,403),'Traversal filename rejected (application or hosting gateway)')
  check(new.call('/user/upload',{},[('file','empty.txt',b'','text/plain')])['status']==400,'Empty upload rejected')
  check(new.call('/user/upload',{},[('file','huge.bin',bytes(10485761),'application/octet-stream')])['status']==413,'Oversized upload rejected with 413')
  bob=Client();bob.login('bob@demo.local');bob.fuzzy();check(bob.call('/user/files/'+file+'/download')['status']==403,'Bob cannot download before sharing')
@@ -90,7 +90,8 @@ def main():
  for page in ['/dashboard','/cloud/files','/performance','/notifications','/about']:
   check(cloud.call(page)['status']==200,'Cloud navigation '+page)
  for asset in ['/style.css','/app.js']:check(anon.call(asset)['status']==200,'Local asset '+asset)
- state={'email':email,'user_id':user_id,'file':file,'recovered':recovered,'passed':passed,'failed':failed,'sha256':hashlib.sha256(content).hexdigest(),'database': 'MySQL' if 'MySQL' in new.call('/about')['text'] else 'H2'}
+ about=new.call('/about')['text'];database='PostgreSQL' if 'PostgreSQL' in about else 'MySQL' if 'MySQL' in about else 'H2'
+ state={'email':email,'user_id':user_id,'file':file,'recovered':recovered,'passed':passed,'failed':failed,'sha256':hashlib.sha256(content).hexdigest(),'database':database}
  (EVIDENCE/'restart-state.json').write_text(json.dumps(state,indent=2));(EVIDENCE/'http-acceptance.json').write_text(json.dumps({'timestamp':datetime.now(timezone.utc).isoformat(),'base':BASE,'checks':RESULTS,'state':state},indent=2));print('Executed',len(RESULTS),'successful assertions')
 
 if __name__=='__main__':main()

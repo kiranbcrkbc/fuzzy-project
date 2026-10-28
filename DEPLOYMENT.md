@@ -1,70 +1,35 @@
-# Complete deployment and zero cost constraint
+# Complete zero-cost demonstration deployment
 
-Publishing and deployment were authorized on 28 October 2026. The later budget instruction limits the total to **₹0**: no payment method, subscription, automatic paid upgrade or purchased domain. This supersedes historical approval checkpoints in earlier build documents.
+The Java 17 Spring Boot application is deployed on Render Free Docker hosting with Render Free PostgreSQL 18. The authenticated Hobby workspace showed **No card on file**, $0 current/projected charges, and the created resources both show Free. No card, paid subscription, automatic paid upgrade, custom domain or charge-capable resource was enabled. Provider-issued HTTPS address: https://fuzzy-project-demo.onrender.com/login.
 
-## Current state
+## Persistence and architecture
 
-GitHub CLI is authenticated and a dedicated private repository has been created. Railway requires user sign-in; its connector is not connected. Actual account plan, remaining credits, expiry, billing restrictions and resource entitlement are unverified. No hosting resources have been provisioned. No live success is claimed.
+The optional `postgres,hosted` profile uses the private PostgreSQL connection. Ciphertext persists in `cloud_object.ciphertext` (BYTEA); trusted manifests, wrapped keys, accounts, access decisions and audit records persist in the other six tables. A stable Base64-encoded 32-byte `FUZZY_MASTER_KEY` host secret wraps file/application keys. No durable state depends on the ephemeral web container. The architecture change was explained before implementation. MySQL and disk storage remain supported and tested locally; the working local demonstration was preserved.
 
-## Architecture and durable storage
+Cloud responses read current stored SQL bytes, and corruption modifies actual ciphertext. Trusted baselines are not rebuilt. Role separation is logical in one process/database; this is an educational cloud simulator, not independent authorities. See deployment/RENDER_STORAGE.md and LIMITATIONS.md.
 
-The complete application is a Java 17 Spring Boot service with server-rendered UI, relational metadata, encrypted UUID objects and a stable master key. The Dockerfile builds/tests source rather than copying local uploads or secrets.
+## Actual plan and expiry
 
-MySQL remains supported and locally tested. For a constrained single-service trial, `demo,hosted` can use the explicitly labelled persistent H2 fallback. H2 is not described as MySQL. Either arrangement requires actual hosted restart tests.
+Created 28 October 2026 in Oregon. Database dashboard explicitly says **expires 27 November 2026**. Free database: 1 GB, 0.1 CPU, 256 MB RAM, no managed backups, external connections disabled, storage autoscaling disabled. At expiry it becomes inaccessible; official documentation gives a 14-day recovery/upgrade grace period before deletion. No paid upgrade is authorized. Export protected SQL data and the matching master key before expiry, or use the preserved local backup. This is not permanent free database hosting.
 
-Mount a provider **persistent volume** at `/var/data`; never use the container layer as storage:
+Free web service: 512 MB RAM / 0.1 CPU; sleeps after 15 idle minutes, cold start roughly a minute (initial observed Spring boot about 71 seconds). Filesystem is ephemeral. Sessions/OTP/fuzzy gates reset on restart. Workspace shares 750 free instance hours/month, 5 GB outbound bandwidth and 500 build minutes. Initial account usage was 22.52/750 hours, 25 MB/5 GB and 0/500 build minutes; other existing services share these quotas. With no payment method, exhausted hours/bandwidth suspend service; exhausted build minutes disable new builds rather than generating supplementary charges. High service-initiated traffic can also cause suspension. No uptime or permanent free availability is promised.
 
-| Component | Persistence requirement |
-|---|---|
-| Ciphertext | `/var/data/cloud/*.bin` |
-| Master key | `/var/data/trusted/master.key`, stable 32 bytes; losing it loses key-unwrapping ability |
-| H2 fallback | `/var/data/trusted/fuzzy.mv.db`, same durable volume |
-| MySQL alternative | External dedicated SQL database; consistent backup with objects/key |
+Official limits checked: [Render Free](https://render.com/docs/free) and [Blueprint specification](https://render.com/docs/blueprint-spec). Railway authentication returned provider errors, including signups disabled; its actual plan was not verified or provisioned. Northflank's official billing documentation requires a payment method regardless of plan, so it was excluded. Existing authenticated Render provided the complete temporary zero-cost route.
 
-Only new synthetic data may be created on the host. No local database, uploads, master key or historical evidence will be migrated publicly.
+## Configuration and security
 
-## Official provider research
+`render.yaml` declares both Free resources, private DB wiring, generated master/seed secrets, /healthz and disabled automatic app deployments. Docker builds and tests source. `SPRING_PROFILES_ACTIVE=postgres,hosted`, `FUZZY_OBJECT_STORE=sql`, `FUZZY_DATA_ROOT=/tmp/fuzzy`, DB_HOST/PORT/NAME/USER/PASSWORD and the two FUZZY secrets are configured in Render. Never commit actual values. `application-postgres.properties` requires database TLS; provider HTTPS terminates at Render. Forwarded headers and HTTPS-only HttpOnly SameSite=Strict session cookies are configured.
 
-Checked 28 October 2026. These are public capabilities, not verified account entitlements.
+All roles require password and one-use OTP. OTP is explicitly simulated session-local email, not independent two-factor authentication. Published local passwords are rejected in hosted mode; the live login hides them. Hosted reset is disabled. No database console is exposed. Only authenticated CLOUD with CSRF may corrupt bounded synthetic demo objects; do not store personal or production data. Upload limit: 10 MiB/file and 12 MiB/request, with provider edge restrictions also applying.
 
-- [Railway trial](https://docs.railway.com/pricing/free-trial): one-time $5 grant for up to 30 days, then Free with $1 monthly credit. Trial volume retention is limited after credit expiry; limited accounts restrict outbound networking. Actual account expiry must be read before provisioning.
-- [Railway limits](https://docs.railway.com/pricing/plans): Trial volume 0.5 GB; Free RAM 0.5 GB and volume 0.5 GB per service. Credits may not sustain an always-on Java/MySQL combination. Never call trial hosting permanently free. Verify actual no-charge behaviour, payment state, remaining credit and exhaustion behaviour first.
-- [Render Free](https://render.com/docs/free): files disappear on restart/redeploy/spin-down; free services cannot attach persistent disks. They sleep after 15 idle minutes. The unchanged disk-backed application is unsuitable; an external SQL database alone does not preserve ciphertext/keys.
-- [Koyeb instances](https://www.koyeb.com/docs/reference/instances): free instances cannot attach volumes. Account/payment eligibility and an alternative durable store would still need verification.
-- [Northflank Sandbox](https://northflank.com/pricing): advertises no card, two services, one database and no sleeping. Actual account eligibility and application-volume inclusion are unverified; a free database alone is insufficient.
-- [Aiven MySQL Free](https://aiven.io/docs/products/mysql/concepts/mysql-free-tier): no-card small single-node SQL service, with inactivity restrictions. It does not supply the Java host or object/key filesystem.
-- [Netlify Functions](https://docs.netlify.com/build/functions/overview/): not a standalone host for this existing long-running JVM and persistent filesystem. No frontend-only substitute is acceptable.
+Private credentials are in ignored `data/trusted/HOSTED_DEMO_CREDENTIALS.md`, or the authenticated Render Environment page's FUZZY_SEED_PASSWORD. Preserve that value across deployments; seeding refuses silently changing existing passwords. Preserve FUZZY_MASTER_KEY permanently with the matching SQL backup. The ignored `data/trusted/render-host.env` is a private exported recovery configuration, never a public deliverable.
 
-No paid option has been selected. No claim that every possible free architecture is impossible is made; a complete free arrangement must be authenticated and tested.
+## Build, schema and rollback
 
-## Prepared configuration
+Local packaged SQL build passed 24 JUnit methods, 91 HTTP assertions and 17 restart checks using a new scratch directory. Real public/container/PostgreSQL evidence is listed in LIVE_TEST_RESULTS.md. Health alone is not a functional test.
 
-Build context is the repository root. `deployment/Dockerfile` uses Maven/Java 17 build and Java 17 runtime. `railway.toml` selects that Dockerfile, `/healthz`, a 180-second startup window and bounded failure restarts. Docker is unavailable locally; container execution remains unverified until host build logs establish it.
+Schema initialization uses idempotent CREATE TABLE IF NOT EXISTS against a new dedicated database. No destructive legacy SQL was imported. Future schema changes require reviewed migrations; never overwrite an unrelated database. SQL ciphertext/reference records share transaction boundaries. For backups pause writes, export all seven tables and separately protect the matching master secret. Full audit responses consume additional database space. No managed backup exists on this free tier.
 
-Set `SPRING_PROFILES_ACTIVE=mysql,hosted` for MySQL or `demo,hosted` for the persistent H2 fallback. Use one instance. Configure the provider's assigned `PORT`, `FUZZY_DATA_ROOT=/var/data`, private `FUZZY_SEED_PASSWORD` (20+ random characters), and MySQL `DB_URL`, `DB_USER`, `DB_PASSWORD` when applicable. Environment examples contain placeholders only.
+Rollback through Render to the previous compatible successful deployment; free services retain only two prior deploys. Preserve database and secrets. Never reset or recreate resources as a rollback. Local fallback: `.\start-demo.ps1 -Background`, http://127.0.0.1:8080/login; dedicated MySQL data and local master key were retained.
 
-The hosted profile binds 0.0.0.0, uses forwarded proxy headers, HTTPS-only HttpOnly SameSite cookies, cached templates and no H2 console. TLS must come from the host. Sessions are in-process and invalidate on restart; domain records/files/keys must survive. Upload limit is 10 MiB and multipart limit 12 MiB, subject to provider proxy limits.
-
-The minimal anonymous `/healthz` returns only UP/DOWN, checking SQL and key readability. Detailed `/health` remains authenticated. Hosted reset is disabled even with the local reset guard. No reset route is exposed. The container drops privilege after preparing dedicated volume directories.
-
-## Restricted demonstration
-
-Hosted startup rejects missing/short seeds and the published local password. The login page hides local credentials. A seed account differing from the configured private password causes failure rather than silently rotating an existing database. Keep the secret stable across deployments and hand it over through an ignored local file or host secret manager, not source/logs/URLs.
-
-OTP can remain the clearly labelled session-local simulated inbox for this educational demo; it is not actual mail or an independent second factor. New accounts remain pending until private KGC approval. Corruption requires CLOUD role, demo mode, POST+CSRF, eligible demo-owned object and bounded index. Host only isolated synthetic data. Pairings, the paper's algorithms and actual biometrics remain incomplete.
-
-## Provisioning and acceptance gate
-
-1. Complete legitimate hosting authentication; inspect actual plan, expiry, credits, restrictions and no-charge status. Stop if a card, upgrade or potentially billable resource is required.
-2. Select confirmed free/trial resources, attach durable storage, configure secrets and obtain a provider-issued HTTPS subdomain. Record true expiry/exhaustion behaviour.
-3. Deploy the pushed commit; inspect build/runtime logs and health.
-4. Browser-test actual HTTPS: OTP, accepted/rejected identity, exact-byte encrypted roundtrip, sharing denial/approval, full PASS, real corruption/new full FAIL and corrupted-download rejection.
-5. Controlled restart/redeploy: sign in again and prove accounts, grants, files, usable keys and history persist. Health alone is not completion.
-
-## Schema, backup and rollback
-
-Schema v1 uses idempotent CREATE TABLE IF NOT EXISTS. For a fresh dedicated database, bootstrap the reviewed schema once, then set `SPRING_SQL_INIT_MODE=never`. Future changes need reviewed migrations; never import destructive legacy dumps.
-
-Pause writes and back up SQL, ciphertext and the matching master key as one set. Stop H2 before copying its file. Protect backups outside Git and test restoration. Credit expiry is not a backup policy. Retain the previous tested commit/image and compatible data; roll back application code without resetting storage. Railway Free/Trial image retention is limited, so do not assume indefinite image rollback.
-
-The local backup remains available through `.\start-demo.ps1 -Background` at http://127.0.0.1:8080/login. Preserve its database and master key.
+The prototype does not reproduce pairing-based fuzzy identity cryptography, biometric recognition, threshold secret sharing, erasure coding or the research soundness theorem. No production security claim is made.
