@@ -10,14 +10,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class CryptoService {
  private final byte[] master;
+ private final boolean externalMaster;
  public final Path root;
  private final SecureRandom random=new SecureRandom();
- public CryptoService(@Value("${fuzzy.data-root}") String dataRoot) throws Exception {
+ public CryptoService(String dataRoot) throws Exception {this(dataRoot,"");}
+ @org.springframework.beans.factory.annotation.Autowired
+ public CryptoService(@Value("${fuzzy.data-root}") String dataRoot,@Value("${fuzzy.master-key-base64:}")String configuredMaster) throws Exception {
   root=Path.of(dataRoot).toAbsolutePath().normalize(); Files.createDirectories(root.resolve("cloud")); Files.createDirectories(root.resolve("trusted"));
+  externalMaster=configuredMaster!=null&&!configuredMaster.isBlank();
   Path p=root.resolve("trusted/master.key");
-  if(Files.exists(p)) master=Files.readAllBytes(p); else {master=random(32); Files.write(p,master,StandardOpenOption.CREATE_NEW);}
+  if(externalMaster)master=Base64.getDecoder().decode(configuredMaster);else if(Files.exists(p)) master=Files.readAllBytes(p); else {master=random(32); Files.write(p,master,StandardOpenOption.CREATE_NEW);}
   if(master.length!=32) throw new IllegalStateException("Invalid master key file. Restore the trusted key backup.");
  }
+ public boolean externalMaster(){return externalMaster;}
+ public boolean masterReady(){return master.length==32&&(externalMaster||Files.isReadable(root.resolve("trusted/master.key")));}
  public byte[] random(int n){byte[] b=new byte[n];random.nextBytes(b);return b;}
  public byte[] encrypt(byte[] plain,byte[] key,String aad) throws Exception {
   byte[] iv=random(12); Cipher c=Cipher.getInstance("AES/GCM/NoPadding"); c.init(Cipher.ENCRYPT_MODE,new SecretKeySpec(key,"AES"),new GCMParameterSpec(128,iv)); c.updateAAD(aad.getBytes(StandardCharsets.UTF_8));

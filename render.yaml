@@ -1,0 +1,52 @@
+# Both resources explicitly free; do not upgrade. Database expires after 30 days.
+databases:
+  - name: fuzzy-project-demo-db
+    plan: free
+    region: oregon
+    databaseName: fuzzy_demo
+    user: fuzzy_app
+    postgresMajorVersion: "18"
+    ipAllowList: []
+services:
+  - type: web
+    name: fuzzy-project-demo
+    runtime: docker
+    plan: free
+    region: oregon
+    repo: https://github.com/kiranbcrkbc/fuzzy-project
+    branch: main
+    dockerfilePath: ./deployment/Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeployTrigger: "off"
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: postgres,hosted
+      - key: FUZZY_OBJECT_STORE
+        value: sql
+      - key: FUZZY_DATA_ROOT
+        value: /tmp/fuzzy
+      - key: FUZZY_MASTER_KEY
+        generateValue: true
+      - key: FUZZY_SEED_PASSWORD
+        generateValue: true
+      - key: DB_HOST
+        fromDatabase:
+          name: fuzzy-project-demo-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: fuzzy-project-demo-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: fuzzy-project-demo-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: fuzzy-project-demo-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: fuzzy-project-demo-db
+          property: password

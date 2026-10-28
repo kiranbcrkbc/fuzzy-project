@@ -32,4 +32,6 @@ public class AuditProtocol {
   return new Result(pass,pass?"Selected current ciphertext blocks match trusted upload-time metadata":"Ciphertext digest or block length mismatch",checks);
  }
  private Result fail(String message){return new Result(false,message,List.of());}
+ /** The supplied bytes must be read from the current durable ciphertext object for this response. */
+ public Response respond(Challenge c,byte[] current){List<ResponseBlock>blocks=new ArrayList<>();for(int i:c.indices()){long offset=(long)i*BLOCK_SIZE;int start=(int)Math.min(offset,current.length);int end=(int)Math.min(offset+BLOCK_SIZE,current.length);blocks.add(new ResponseBlock(i,Arrays.copyOfRange(current,start,end)));}return new Response(c.auditId(),c.nonce(),c.fileId(),c.version(),current.length,List.copyOf(blocks));}
 }
