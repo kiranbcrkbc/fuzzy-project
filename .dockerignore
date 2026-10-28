@@ -1,0 +1,8 @@
+**
+!app/
+!app/pom.xml
+!app/src/
+!app/src/**
+!deployment/
+!deployment/Dockerfile
+!deployment/entrypoint.sh

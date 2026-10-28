@@ -1,0 +1,21 @@
+# Restricted synthetic hosted demo. Supply values in the host's secret manager.
+SPRING_PROFILES_ACTIVE=mysql,hosted
+DB_URL=jdbc:mysql://PRIVATE_HOST:3306/fuzzy_demo?sslMode=VERIFY_IDENTITY
+DB_USER=fuzzy_app
+DB_PASSWORD=CHANGE_IN_SECRET_MANAGER
+FUZZY_DATA_ROOT=/var/data
+FUZZY_DEMO=true
+FUZZY_SEED_PASSWORD=REPLACE_WITH_PRIVATE_RANDOM_20_PLUS_CHARACTER_SECRET
+COOKIE_SECURE=true
+SERVER_ADDRESS=0.0.0.0
+PORT=8080
+SPRING_SQL_INIT_MODE=always
+# Fresh dedicated v1 schema only; set never after reviewed initialization.
+FUZZY_SMTP=false
+# SMTP below is optional and unverified. Demo inbox remains explicitly simulated.
+SPRING_MAIL_HOST=SMTP_HOST
+SPRING_MAIL_PORT=587
+SPRING_MAIL_USERNAME=SMTP_USERNAME
+SPRING_MAIL_PASSWORD=CHANGE_IN_SECRET_MANAGER
+SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
